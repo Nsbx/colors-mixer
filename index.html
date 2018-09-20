@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Le codages des couleurs en Hexadecimal</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <canvas height="300" height="300" id="canvas" class="canvas"></canvas>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12 text-center">
+                <div class="badge badge-secondary" id="hexLabel">0</div>
+            </div>
+            <div class="form-group col-md-12 text-center">
+                <input type="text" class="form-control" id="hexInput">
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="form-group col-md-4 text-center">
+                <div class="badge badge-danger" id="redLabel">0</div>
+            </div>
+            <div class="form-group col-md-4 text-center">
+                <div class="badge badge-success" id="greenLabel">0</div>
+            </div>
+            <div class="form-group col-md-4 text-center">
+                <div class="badge badge-primary" id="blueLabel">0</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4 text-center">
+                <input type="range" id="redSlider" min="0" max="255" oninput="calculateColor()" class="form-control">
+            </div>
+            <div class="form-group col-md-4 text-center">
+                <input type="range" id="greenSlider" min="0" max="255" oninput="calculateColor()" class="form-control">
+            </div>
+            <div class="form-group col-md-4 text-center">
+                <input type="range" id="blueSlider" min="0" max="255" oninput="calculateColor()" class="form-control">
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        .canvas {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            canvas = document.getElementById('canvas');
+            calculateColor()
+        });
+
+        document.getElementById('hexInput').addEventListener('keypress', function (e) {
+            var key = e.which || e.keyCode;
+            if (key === 13) {
+                hexArray = document.getElementById('hexInput').value.match(/.{1,2}/g);
+                red = parseInt(hexArray[0], 16);
+                green = parseInt(hexArray[1], 16);
+                blue = parseInt(hexArray[2], 16);
+                document.getElementById("redSlider").value = red;
+                document.getElementById("redLabel").innerHTML = red;
+                document.getElementById("greenSlider").value = green;
+                document.getElementById("greenLabel").innerHTML = green;
+                document.getElementById("blueSlider").value = blue;
+                document.getElementById("blueLabel").innerHTML = blue;
+                calculateColor();
+            }
+        });
+
+        function calculateColor() {
+            red = parseInt(document.getElementById("redSlider").value);
+            red = red < 10 ? "0" + red : red;
+            document.getElementById("redLabel").innerHTML = red;
+
+            green = parseInt(document.getElementById("greenSlider").value);
+            green = green < 10 ? "0" + green : green;
+            document.getElementById("greenLabel").innerHTML = green;
+
+            blue = parseInt(document.getElementById("blueSlider").value);
+            blue = blue < 10 ? "0" + blue : blue;
+            document.getElementById("blueLabel").innerHTML = blue;
+
+            red = red <= 15 && red >= 10 ? "0" + red.toString(16).toUpperCase() : red.toString(16).toUpperCase();
+            green = green <= 15 && green >= 10 ? "0" + green.toString(16).toUpperCase() : green.toString(16).toUpperCase();
+            blue = blue <= 15 && blue >= 10 ? "0" + blue.toString(16).toUpperCase() : blue.toString(16).toUpperCase();
+
+            hex = red + green + blue
+            document.getElementById("hexLabel").innerHTML = '#' + hex;
+            ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#' + hex;
+            ctx.fillRect(0, 0, 300, 300);
+        }
+    </script>
+</body>
+
+</html>
